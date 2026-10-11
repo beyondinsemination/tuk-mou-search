@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TUK MOU Search</title>
+<style>
+  :root {
+    --navy: #0b2545;
+    --accent: #c8102e;
+    --bg: #f6f7f9;
+    --card: #ffffff;
+    --text: #1a1a1a;
+    --muted: #666;
+    --border: #e2e5ea;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  header {
+    background: var(--navy);
+    color: white;
+    padding: 28px 20px 20px;
+  }
+  header h1 {
+    margin: 0 0 4px;
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+  header p {
+    margin: 0;
+    color: #c7d2e3;
+    font-size: 0.9rem;
+  }
+  main {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+  form {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  input[type="text"] {
+    flex: 1;
+    padding: 12px 14px;
+    font-size: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+  }
+  input[type="text"]:focus {
+    border-color: var(--navy);
+  }
+  button {
+    padding: 12px 20px;
+    font-size: 1rem;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  button:hover { background: #a60d26; }
+  .meta {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+  }
+  .result {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+  }
+  .result .source {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .result .chunk-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .result .text {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+  }
+  .empty {
+    color: var(--muted);
+    text-align: center;
+    padding: 40px 0;
+  }
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.78rem;
+    padding: 20px;
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>TUK MOU Search</h1>
+    <p>Search across {{ total_chunks }} indexed sections from the International Office's MOUs</p>
+  </header>
+  <main>
+    <form method="get" action="/">
+      <input type="text" name="q" placeholder="e.g. how can either party terminate this agreement"
+             value="{{ query }}" autofocus>
+      <button type="submit">Search</button>
+    </form>
+
+    {% if query and not results %}
+      <div class="empty">No matching sections found for "{{ query }}".</div>
+    {% elif results %}
+      <div class="meta">{{ results|length }} result(s) for "{{ query }}"</div>
+      {% for r in results %}
+        <div class="result">
+          <div class="source">{{ r.source_file }}</div>
+          <div class="chunk-label">Section {{ r.chunk_index }}</div>
+          <div class="text">{{ r.text }}</div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="empty">Type a question or keyword above to search the MOU collection.</div>
+    {% endif %}
+  </main>
+  <footer>
+    Pilot search tool &middot; Technical University of Kenya &middot; Directorate of Community Outreach, Linkages and Partnerships
+  </footer>
+</body>
+</html>
