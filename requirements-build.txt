@@ -1,0 +1,4 @@
+# Extra dependencies needed only to rebuild the TF-IDF index from chroma_db/
+# (i.e. to run build_tfidf_index.py). Not needed to run the deployed app --
+# install requirements.txt alone for that.
+chromadb==1.5.9
